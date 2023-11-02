@@ -7,8 +7,10 @@ type Video struct {
 	AuthorID      uint64    `gorm:"not null;index" json:"author_id"`
 	PlayURL       string    `gorm:"type:varchar(777);not null" json:"play_url"`
 	CoverURL      string    `gorm:"type:varchar(777);not null" json:"cover_url"`
-	Title         string    `gorm:"type:varchar(63);not null" json:"title"`
+	Title         string    `gorm:"type:varchar(63);index:fulltext_idx,class:FULLTEXT,option:WITH PARSER ngram;not null" json:"title"`
 	PublishTime   time.Time `gorm:"not null;index" json:"publish_time"`
 	FavoriteCount int64     `gorm:"default:0;not null" json:"favorite_count"`
 	CommentCount  int64     `gorm:"default:0;not null" json:"comment_count"`
+	// 视频的分类 23.11.03新增
+	Topic string `gorm:"type:varchar(32);index:;not null" json:"topic"`
 }

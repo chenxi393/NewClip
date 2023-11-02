@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-type MysqlConfig struct {
+type MySQL struct {
 	Host        string `mapstructure:"host"`
 	Port        string `mapstructure:"port"`
 	UserName    string `mapstructure:"username"`
@@ -17,13 +17,13 @@ type MysqlConfig struct {
 	MaxIdleConn int    `mapstructure:"maxIdleConn"`
 }
 
-type HttpConfig struct {
+type HTTP struct {
 	Host            string `mapstructure:"host"`
 	Port            string `mapstructure:"port"`
 	DefaultCoverURL string `mapstructure:"defaultCoverURL"`
 }
 
-type RedisConfig struct {
+type Redis struct {
 	Host     string `mapstructure:"host"`
 	Port     string `mapstructure:"port"`
 	Database int    `mapstructure:"db"`
@@ -45,32 +45,32 @@ type QiNiuCloud struct {
 	OssDomain string `mapstructure:"ossDomain"`
 }
 
-type System struct {
-	Qiniu        QiNiuCloud  `mapstructure:"qiniu"`
-	HttpAddress  HttpConfig  `mapstructure:"httpAddress"`
-	MysqlMaster  MysqlConfig `mapstructure:"mysqlMaster"`
-	MysqlSlave   MysqlConfig `mapstructure:"mysqlSlave"`
-	UserRedis    RedisConfig `mapstructure:"userRedis"`
-	VideoRedis   RedisConfig `mapstructure:"videoRedis"`
-	CommentRedis RedisConfig `mapstructure:"commentRedis"`
-	MQ           RabbitMQ    `mapstructure:"rabbitmq"`
-	Mode         string      `mapstructure:"mode"`
-	JwtSecret    string      `mapstructure:"jwtSecret"`
+type SystemConfig struct {
+	Qiniu        QiNiuCloud `mapstructure:"qiniu"`
+	HttpAddress  HTTP       `mapstructure:"httpAddress"`
+	MysqlMaster  MySQL      `mapstructure:"mysqlMaster"`
+	MysqlSlave   MySQL      `mapstructure:"mysqlSlave"`
+	UserRedis    Redis      `mapstructure:"userRedis"`
+	VideoRedis   Redis      `mapstructure:"videoRedis"`
+	CommentRedis Redis      `mapstructure:"commentRedis"`
+	MQ           RabbitMQ   `mapstructure:"rabbitmq"`
+	Mode         string     `mapstructure:"mode"`
+	JwtSecret    string     `mapstructure:"jwtSecret"`
 }
 
-var SystemConfig System
+var System SystemConfig
 
 func Init() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./config/")
 
-	err := viper.ReadInConfig() 
-	if err != nil {           
+	err := viper.ReadInConfig()
+	if err != nil {
 		log.Fatal("fatal error config file: ", err.Error())
 	}
 
-	err = viper.Unmarshal(&SystemConfig)
+	err = viper.Unmarshal(&System)
 	if err != nil {
 		log.Fatal("fatal error unmarshal config: ", err.Error())
 	}
@@ -82,4 +82,3 @@ func Init() {
 	})
 	log.Println("viper读取配置文件成功")
 }
-
