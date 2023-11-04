@@ -19,6 +19,7 @@ type UserClaims struct {
 
 func SignToken(userID uint64) (string, error) {
 	signingKey := []byte(config.System.JwtSecret)
+	// 配置 userClaims ,并生成 token
 	claims := UserClaims{
 		userID,
 		jwt.RegisteredClaims{
@@ -64,7 +65,7 @@ func Authentication(c *fiber.Ctx) error {
 	}
 	claims, err := ParseToken(token)
 	if err != nil {
-		res := response.CommonResponse{
+		res := response.UserRegisterOrLogin{
 			StatusCode: response.Failed,
 			StatusMsg:  response.WrongToken,
 		}

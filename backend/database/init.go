@@ -79,7 +79,7 @@ func InitMySQL() {
 	}
 	// 连接池什么的不懂 先放着
 	constant.DB = db
-	migration()
+	//migration()
 }
 
 // 企业一般不用自动建表 记得自己在主库里建表

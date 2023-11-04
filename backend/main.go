@@ -3,6 +3,8 @@ package main
 import (
 	"newclip/config"
 	"newclip/database"
+	"newclip/package/cache"
+	"newclip/package/mq"
 	"newclip/package/util"
 	"newclip/router"
 
@@ -16,7 +18,8 @@ func main() {
 	util.InitZap()
 	database.InitMySQL()
 	// TODO redis mq
-
+	cache.InitRedis()
+	mq.InitMQ()
 	// 注意！ 当上传文件超过30MB时 将会返回413 正式上线应该更小
 	app := fiber.New(fiber.Config{
 		BodyLimit: 30 * 1024 * 1024,

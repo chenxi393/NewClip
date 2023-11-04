@@ -20,6 +20,7 @@ type MySQL struct {
 type HTTP struct {
 	Host            string `mapstructure:"host"`
 	Port            string `mapstructure:"port"`
+	VideoAddress    string `mapstructure:"videoAddress"`
 	DefaultCoverURL string `mapstructure:"defaultCoverURL"`
 }
 
@@ -56,6 +57,7 @@ type SystemConfig struct {
 	MQ           RabbitMQ   `mapstructure:"rabbitmq"`
 	Mode         string     `mapstructure:"mode"`
 	JwtSecret    string     `mapstructure:"jwtSecret"`
+	MyIP         string     `mapstructure:"myIP"`
 }
 
 var System SystemConfig
