@@ -21,9 +21,15 @@ require (
 )
 
 require (
+	github.com/fasthttp/websocket v1.5.4 // indirect
+	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
+)
+
+require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/bits-and-blooms/bitset v1.10.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
+	github.com/gofiber/contrib/websocket v1.2.2
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect

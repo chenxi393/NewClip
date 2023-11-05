@@ -4,7 +4,7 @@ services:
     build: . 
     container_name: newclip_go_fiber
     ports:
-      - "80:80"
+      - "8000:8000"
     depends_on:
       - newclip_mysql_master
       - newclip_mysql_slave
@@ -13,7 +13,7 @@ services:
     networks:
       - newclip_mysql
       - newclip_backend
-    restart: on-failure:10
+    restart: always
     environment:
       - TZ=Asia/Shanghai
 

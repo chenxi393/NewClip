@@ -1,8 +1,9 @@
 mode: "debug"
-jwtSecret: "qiniu-newclip"
+jwtSecret: 
+myIP: 
 
 qiniu:
-  bucket: "newclip" 
+  bucket: 
   accessKey: 
   secretKey: 
   ossDomain: 
