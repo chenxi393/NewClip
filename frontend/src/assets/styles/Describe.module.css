@@ -1,0 +1,29 @@
+.describeContainer{
+    position:absolute;
+    bottom: 2%;
+    left: 0;
+    width: 50%;
+    height: 20%;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+}
+.describe{
+    width: 100%;
+    height: 100%;
+    padding-left: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+.name{
+    font-size: 1.5rem;
+    word-wrap: break-word;
+    text-align: start;
+}
+.title{
+    font-size: 1rem;
+    word-wrap: break-word;
+    text-align: start;
+}
