@@ -1,0 +1,60 @@
+mode: "debug"
+jwtSecret: 
+myIP: 
+
+qiniu:
+  bucket: 
+  accessKey: 
+  secretKey: 
+  ossDomain: 
+
+httpAddress:
+  host: 0.0.0.0
+  port: 8000
+  videoAddress: "./newclipVideo"
+  defaultCoverURL: "https://img.zcool.cn/community/0159355d7dad02a801211d53f6aa65.png@1280w_1l_2o_100sh.png"
+
+mysqlMaster:
+  host: newclip_mysql_master
+  port: 3306
+  username: root
+  password: 123456
+  database: newclip
+  maxOpenConn: 100
+  maxIdleConn: 10
+
+mysqlSlave:
+  host: newclip_mysql_slave
+  port: 3306
+  username: root
+  password: 123456
+  database: newclip
+  maxOpenConn: 100
+  maxIdleConn: 10
+
+userRedis:
+  host: newclip_redis
+  port: 6379
+  password:
+  db: 0
+  poolSize: 100
+
+videoRedis:
+  host: newclip_redis
+  port: 6379
+  password:
+  db: 1
+  poolSize: 100
+
+commentRedis:
+  host: newclip_redis
+  port: 6379
+  password:
+  db: 2
+  poolSize: 100
+
+rabbitmq:
+  host: newclipz_dev_rabbitmq
+  port: 5672
+  user: user
+  password: password
