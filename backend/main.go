@@ -20,6 +20,7 @@ func main() {
 	// TODO redis mq
 	cache.InitRedis()
 	mq.InitMQ()
+	util.RegisterChatGPT()
 	// 注意！ 当上传文件超过30MB时 将会返回413 正式上线应该更小
 	app := fiber.New(fiber.Config{
 		BodyLimit: 30 * 1024 * 1024,

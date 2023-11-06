@@ -5,6 +5,7 @@ import (
 	"newclip/database"
 	"newclip/package/cache"
 	"newclip/package/constant"
+	"newclip/package/util"
 	"newclip/response"
 
 	"go.uber.org/zap"
@@ -34,6 +35,10 @@ func (service *MessageService) MessageAction(loginUserID uint64) error {
 	} else if service.ActionType != "1" {
 		err := fmt.Errorf("ActionType 错误")
 		return err
+	}
+	// 给ChatGPT发送消息
+	if service.ToUserID == constant.ChatGPTID {
+		return util.SendToChatGPT(loginUserID, service.Content)
 	}
 	// 发送的id是不是朋友
 	isfollowing, err := cache.IsFollow(loginUserID, service.ToUserID)
