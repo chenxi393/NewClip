@@ -1,0 +1,120 @@
+version: '3.8'
+services:
+  newclip_frontend:
+    build: ./frontend
+    container_name: newclip_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - newclip_go_fiber
+    networks:
+      - newclip_backend
+    environment:
+      - TZ=Asia/Shanghai
+
+  newclip_go_fiber: 
+    build: ./backend
+    container_name: newclip_go_fiber
+    ports:
+      - "8000:8000"
+    depends_on:
+      - newclip_mysql_master
+      - newclip_mysql_slave
+      - newclip_redis
+      - newclipz_dev_rabbitmq
+    networks:
+      - newclip_mysql
+      - newclip_backend
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+
+  newclip_mysql_master:
+    container_name: newclip_mysql_master 
+    image: mysql:latest
+    ports:
+      - "8001:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: 'newclip'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+      MASTER_SYNC_USER: syncuser
+      MASTER_SYNC_PASSWORD: sync123456
+      SYNC_ALLOW_HOST: '%'
+      R_W_USER: rw_user
+      R_W_USER_PASSWORD: rw123456
+      R_W_USER_HOST: '%'
+      R_W_DATABASE: '*'
+      TZ: Asia/Shanghai
+    volumes:
+      - ./backend/config/mysql/master.sh:/docker-entrypoint-initdb.d/master.sh
+      - ./backend/config/mysql/master.cnf:/etc/my.cnf
+      - newclip_mysql_master:/var/lib/mysql/
+    networks:
+      newclip_mysql:
+        ipv4_address: 192.168.1.100
+
+  newclip_mysql_slave:
+    container_name: newclip_mysql_slave
+    image: mysql:latest
+    ports:
+      - "8002:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: 'newclip'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+      MASTER_HOST: 192.168.1.100
+      MASTER_PORT: 3306
+      MASTER_SYNC_USER: syncuser
+      MASTER_SYNC_PASSWORD: sync123456
+      R_USER: r_user
+      R_USER_PASSWORD: r123456
+      R_USER_HOST: '%'
+      TZ: Asia/Shanghai
+    volumes:
+      - ./backend/config/mysql/slave.sh:/docker-entrypoint-initdb.d/slave.sh
+      - ./backend/config/mysql/slave.cnf:/etc/my.cnf
+      - newclip_mysql_slave:/var/lib/mysql/
+    networks:
+      newclip_mysql:
+        ipv4_address: 192.168.1.101
+    depends_on:
+      - newclip_mysql_master
+  
+  newclip_redis:
+    image: redis:latest
+    container_name: newclip_redis
+    ports:
+      - 8003:6379
+    networks:
+      - newclip_backend
+    volumes:
+      - newclip_redis:/data
+
+  newclipz_dev_rabbitmq:
+    image: rabbitmq:3-management
+    container_name: newclipz_dev_rabbitmq
+    ports:
+      - 8004:5672
+      - 8005:15672
+    volumes:
+      - ./backend/config/rabbitmq/definitions.json:/opt/definitions.json:ro
+      - ./backend/config/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+      - newclip_rabbitmq:/var/lib/rabbitmq
+    networks:
+      - newclip_backend
+
+networks:
+  newclip_mysql:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.1.0/24"
+  newclip_backend: 
+
+volumes:
+  newclip_mysql_master:
+  newclip_mysql_slave:
+  newclip_redis:
+  newclip_rabbitmq:

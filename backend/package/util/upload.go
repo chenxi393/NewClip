@@ -38,7 +38,6 @@ func UploadVideo(file []byte, fileName string) (string, string, error) {
 
 }
 
-
 func UploadToOSS(fileName, filePath string) (string, error) {
 	putPolicy := storage.PutPolicy{
 		Scope: config.System.Qiniu.Bucket,
@@ -66,7 +65,7 @@ func UploadToOSS(fileName, filePath string) (string, error) {
 	err := formUploader.PutFile(context.Background(), &ret, upToken, fileName, filePath, &putExtra)
 	if err != nil {
 		zap.L().Error(err.Error())
-		return "", nil
+		return "", err
 	}
 	// 这里好像是返回了CND 因为那个域名是开启了CDN的 都能访问
 	deadline := time.Now().Add(time.Second * 3600).Unix() //1小时有效期

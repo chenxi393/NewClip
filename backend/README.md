@@ -25,3 +25,23 @@
 
 
 vframe, vsample（视频截图）		0.1 元/千次（不分帧率），其中雪碧图以截取小图和拼接大图的总张数计量
+
+删除关闭的容器、无用的数据卷和网络
+docker system prune
+
+
+
+### mysql 主从不同步解决办法
+先导出主库所有数据 写入到从库
+
+show master status; #查看主库同步的状态
+
+stop SLAVE;
+
+RESET SLAVE;
+
+change master to master_host = '192.168.1.100', master_user = 'syncuser', master_port=3306, master_password='sync123456', master_log_file = 'binlog.000002', master_log_pos=18203;
+
+START SLAVE;
+
+show slave status\G;
