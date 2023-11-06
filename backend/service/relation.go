@@ -7,6 +7,7 @@ import (
 	"newclip/package/cache"
 	"newclip/package/constant"
 	"newclip/package/mq"
+	"newclip/package/util"
 	"newclip/response"
 	"strconv"
 
@@ -281,7 +282,7 @@ func (service *RelationService) RelationFriendList() (*response.FriendResponse, 
 			friends = append(friends, ff)
 		}
 	}
-	friends = append(friends, constant.ChatGPTID)
+	friends = append(friends, util.ChatGPTID)
 	// 拿好友的信息
 	friendsInfo, err := database.SelectUserListByIDs(friends)
 	if err != nil {
