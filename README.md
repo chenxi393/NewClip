@@ -16,6 +16,8 @@
 
 后端接口地址:  http://newclip.cn.:8000/newclip/
 
+[线上演示地址](http://newclip.cn.:1000/newclip.mp4)
+
 ## 安装和设置
 
 ## API文档
