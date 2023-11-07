@@ -122,7 +122,8 @@ func GetVideoInfo(videoID uint64) (*model.Video, error) {
 
 func SetPublishSet(userID uint64, pubulishIDSet []uint64) error {
 	key := constant.PublishIDPrefix + strconv.FormatUint(userID, 10)
-	pubulishIDStrings := make([]string, 0, len(pubulishIDSet))
+	pubulishIDStrings := make([]string, 1, len(pubulishIDSet)+1)
+	pubulishIDStrings[0] = "0"
 	for i := range pubulishIDSet {
 		pubulishIDStrings = append(pubulishIDStrings, strconv.FormatUint(pubulishIDSet[i], 10))
 	}
