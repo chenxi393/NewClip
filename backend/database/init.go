@@ -75,11 +75,12 @@ func InitMySQL() {
 		TraceResolverMode: true,
 	}))
 	if err != nil {
-		zap.L().Error("MySQL 读写分离创建失败", zap.Error(err))
+		zap.L().Fatal("MySQL 读写分离创建失败", zap.Error(err))
+		// 应该让容器重启的
 	}
 	// 连接池什么的不懂 先放着
 	constant.DB = db
-	migration()
+	// migration()
 }
 
 // 企业一般不用自动建表 记得自己在主库里建表
