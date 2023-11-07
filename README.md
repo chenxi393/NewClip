@@ -18,6 +18,8 @@
 
 [线上演示地址](http://newclip.cn.:1000/newclip.mp4)
 
+[备用线上演示地址]([http://newclip.cn.:1000/newclip.mp4](https://www.bilibili.com/video/BV1dw411K7NY/))
+
 ## 安装和设置
 
 ## API文档
