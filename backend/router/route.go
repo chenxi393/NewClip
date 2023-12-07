@@ -11,9 +11,12 @@ import (
 )
 
 func InitRouter(app *fiber.App) {
+	// 允许所有跨域请求
 	app.Use(cors.New())
 	app.Static("/video", "./newclipVideo",
-		fiber.Static{ByteRange: true}) // 分块传输。
+		fiber.Static{ByteRange: true}) // 好像可以分块传输 但是客户端没啥用。
+	app.Static("/image", "./newclipImage") // 是可以用绝对路径
+
 	api := app.Group("/newclip")
 	{
 		// 新增接口 搜索功能 可以拓展搜索用户

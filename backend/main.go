@@ -4,6 +4,7 @@ import (
 	"newclip/config"
 	"newclip/database"
 	"newclip/package/cache"
+	"newclip/package/llm"
 	"newclip/package/mq"
 	"newclip/package/util"
 	"newclip/router"
@@ -14,17 +15,18 @@ import (
 )
 
 func main() {
+	// 手动调用初始化函数 可以考虑使用init函数
 	config.Init()
 	util.InitZap()
 	database.InitMySQL()
-	// TODO redis mq
 	cache.InitRedis()
 	mq.InitMQ()
-	util.RegisterChatGPT()
-	// 注意！ 当上传文件超过30MB时 将会返回413 正式上线应该更小
+	llm.RegisterChatGPT()
+	// 客户端文件超过30MB 返回413
 	app := fiber.New(fiber.Config{
 		BodyLimit: 30 * 1024 * 1024,
 	})
+	// 使用中间件打印日志
 	app.Use(logger.New())
 	router.InitRouter(app)
 	zap.L().Fatal("fiber启动失败: ", zap.Error(app.Listen(

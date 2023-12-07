@@ -26,7 +26,7 @@ function SharePopover({ video }) {
             await navigator.clipboard.writeText(window.location.href);
             message.success("网址已复制到剪切板")
         } catch (err) {
-            message.error('复制失败', err);
+            message.error('复制失败');
         }
     }
     /**

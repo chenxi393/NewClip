@@ -1,6 +1,6 @@
-FROM golang:latest
+FROM golang:alpine AS builder
 
-ENV DEBIAN_FRONTEND noninteractive
+LABEL stage=gobuilder
 
 # 解决go镜像下载慢的问题
 ENV GO111MODULE=on \
@@ -12,4 +12,12 @@ COPY . .
 
 RUN go install
 
-CMD /go/bin/newclip
+FROM alpine
+
+WORKDIR /app
+
+COPY --from=builder /go/projects/newclip/config /app/config
+
+COPY --from=builder /go/bin/newclip /app/newclip
+
+CMD /app/newclip

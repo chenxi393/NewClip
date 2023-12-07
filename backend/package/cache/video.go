@@ -127,7 +127,11 @@ func SetPublishSet(userID uint64, pubulishIDSet []uint64) error {
 	for i := range pubulishIDSet {
 		pubulishIDStrings = append(pubulishIDStrings, strconv.FormatUint(pubulishIDSet[i], 10))
 	}
-	return VideoRedisClient.SAdd(key, pubulishIDStrings).Err()
+	pp := VideoRedisClient.Pipeline()
+	pp.SAdd(key, pubulishIDStrings)
+	pp.Expire(key, constant.Expiration+time.Duration(rand.Intn(100))*time.Second)
+	_, err := pp.Exec()
+	return err
 }
 
 func GetPubulishSet(userID uint64) ([]uint64, error) {

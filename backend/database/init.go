@@ -2,7 +2,6 @@ package database
 
 import (
 	"newclip/config"
-	"newclip/model"
 	"newclip/package/constant"
 	"strings"
 
@@ -60,15 +59,16 @@ func InitMySQL() {
 		},
 	})
 	if err != nil {
-		zap.L().Fatal("MySQL 连接失败", zap.Error(err))
+		zap.L().Fatal("MySQL主库连接: 失败", zap.Error(err))
 	}
+	zap.L().Info("MySQL主库连接: 成功")
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxOpenConns(config.System.MysqlMaster.MaxOpenConn) // 设置数据库最大连接数
 	sqlDB.SetMaxIdleConns(config.System.MysqlMaster.MaxIdleConn) // 设置上数据库最大闲置连接数
 	// 查询在从库完成，其他操作如写入update在主库操作
 	err = db.Use(dbresolver.Register(dbresolver.Config{
-		//Sources:  []gorm.Dialector{mysql.Open(masterDNS)}, // update使用 这里应该是默认连接主库
-		Replicas: []gorm.Dialector{mysql.Open(slaveDNS)}, // select 使用
+		Sources:  []gorm.Dialector{mysql.Open(masterDNS)}, // update使用 这里应该是默认连接主库
+		Replicas: []gorm.Dialector{mysql.Open(slaveDNS)},  // select 使用
 		// sources/replicas load balancing policy
 		Policy: dbresolver.RandomPolicy{},
 		// print sources/replicas mode in logger
@@ -76,24 +76,26 @@ func InitMySQL() {
 	}))
 	if err != nil {
 		zap.L().Fatal("MySQL 读写分离创建失败", zap.Error(err))
-		// 应该让容器重启的
+		// 主从创建失败 此时不应该写入数据 应该让容器重启的 否则只会写入主库 导致主从不同步
 	}
+	zap.L().Info("MySQL从库连接: 成功")
 	// 连接池什么的不懂 先放着
 	constant.DB = db
-	// migration()
+	//migration()
 }
 
+// 彻底弃用自动建表
 // 企业一般不用自动建表 记得自己在主库里建表
-func migration() {
-	err := constant.DB.Set("gorm:table_options", "charset=utf8mb4").AutoMigrate(
-		&model.User{},
-		&model.Follow{},
-		&model.Video{},
-		&model.Favorite{},
-		&model.Comment{},
-		&model.Message{},
-	)
-	if err != nil {
-		zap.L().Fatal("数据库migration失败", zap.Error(err))
-	}
-}
+// func migration() {
+// 	err := constant.DB.Set("gorm:table_options", "charset=utf8mb4").AutoMigrate(
+// 		&model.User{},
+// 		&model.Follow{},
+// 		&model.Video{},
+// 		&model.Favorite{},
+// 		&model.Comment{},
+// 		&model.Message{},
+// 	)
+// 	if err != nil {
+// 		zap.L().Fatal("数据库migration失败", zap.Error(err))
+// 	}
+// }

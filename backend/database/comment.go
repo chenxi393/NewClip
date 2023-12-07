@@ -38,7 +38,7 @@ func CommentDelete(commentID *string, videoID, userID uint64) (*model.Comment, e
 	// delete 不会回写到comment里  Clauses(clause.Returning{}) 这个才会回写
 	err := constant.DB.Transaction(func(tx *gorm.DB) error {
 		// 删除要先检查里面有没有啊
-		err := tx.Where("id = ? AND video_id = ? AND user_id = ?", commentID, videoID, userID).First(&comment).Error
+		err := tx.Where("id = ? AND video_id = ? AND user_id = ?", *commentID, videoID, userID).First(&comment).Error
 		if err != nil || comment.ID == 0 {
 			return err
 		}

@@ -15,6 +15,7 @@ import (
 // 数据库里查 也算用了缓存 也没有顺序问题
 func SetFollowUserIDSet(userID uint64, followIDSet []uint64) error {
 	key := constant.FollowIDPrefix + strconv.FormatUint(userID, 10)
+	// 初始化的时候 加一个0 维持缓存存在
 	followIDStrings := make([]string, 1, len(followIDSet)+1)
 	followIDStrings[0] = "0"
 	for i := range followIDSet {

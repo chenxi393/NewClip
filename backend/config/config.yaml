@@ -1,7 +1,6 @@
-mode: "debug"
+mode: debug
 jwtSecret: 
 gptSecret: 
-myIP:  # 用于临时访问视频
 
 qiniu:
   bucket: 
@@ -12,15 +11,14 @@ qiniu:
 httpAddress:
   host: 0.0.0.0
   port: 8000
-  videoAddress: "./newclipVideo"
-  defaultCoverURL: "https://img.zcool.cn/community/0159355d7dad02a801211d53f6aa65.png@1280w_1l_2o_100sh.png"
-
+  videoAddress: ./newclipVideo
+  
 # 密码均用于测试环境 不用于生产环境
 mysqlMaster:
   host: newclip_mysql_master
   port: 3306
   username: root
-  password: 123456
+  password: 
   database: newclip
   maxOpenConn: 100
   maxIdleConn: 10
@@ -29,7 +27,7 @@ mysqlSlave:
   host: newclip_mysql_slave
   port: 3306
   username: root
-  password: 123456
+  password: 
   database: newclip
   maxOpenConn: 100
   maxIdleConn: 10

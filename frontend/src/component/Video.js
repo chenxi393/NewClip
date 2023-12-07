@@ -76,7 +76,7 @@ function Video({ video, isPlaying, handlePlaying, ismuted, handleMuted, volume, 
 
     useEffect(()=>{
         get();// eslint-disable-next-line
-    },[haveComments])
+    },[haveComments,video])
     
     return (
         <div className={styles.outside}>
@@ -114,7 +114,7 @@ function Video({ video, isPlaying, handlePlaying, ismuted, handleMuted, volume, 
                     </Controls>
                 </div>
             </div>
-            {showComments && <CommentArea handleModal={handleModal} update={get} video={video} haveComments={haveComments} comments={comments} handleComments={handleComments}></CommentArea>}
+            {showComments && <CommentArea trueIndex={trueIndex} changeVideos={changeVideos} handleModal={handleModal} update={get} video={video} haveComments={haveComments} comments={comments} handleComments={handleComments}></CommentArea>}
         </div>
     )
 }

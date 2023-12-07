@@ -14,7 +14,7 @@ require (
 	github.com/sony/sonyflake v1.2.0
 	github.com/spf13/viper v1.17.0
 	go.uber.org/zap v1.26.0
-	golang.org/x/crypto v0.13.0
+	golang.org/x/crypto v0.14.0
 	gorm.io/driver/mysql v1.5.2
 	gorm.io/gorm v1.25.5
 	gorm.io/plugin/dbresolver v1.4.7
@@ -23,6 +23,7 @@ require (
 require (
 	github.com/fasthttp/websocket v1.5.4 // indirect
 	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
+	golang.org/x/net v0.17.0 // indirect
 )
 
 require (
@@ -31,6 +32,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/gofiber/contrib/websocket v1.2.2
 	github.com/google/uuid v1.3.1 // indirect
+	github.com/gorilla/websocket v1.5.1
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect

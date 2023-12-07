@@ -3,9 +3,9 @@ package util
 import (
 	"context"
 	"newclip/config"
+	"newclip/package/constant"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
 	"github.com/qiniu/go-sdk/v7/storage"
@@ -19,7 +19,6 @@ func UploadVideo(file []byte, fileName string) (string, string, error) {
 		return "", "", err
 	}
 	// 还得有个变量是宿主机ip
-	path := "http://" + config.System.MyIP
 	outputFilePath := filepath.Join(config.System.HttpAddress.VideoAddress, fileName)
 	outputFile, err := os.Create(outputFilePath)
 	if err != nil {
@@ -33,12 +32,10 @@ func UploadVideo(file []byte, fileName string) (string, string, error) {
 		return "", "", err
 	}
 	zap.L().Info(fileName + "已成功写入文件夹")
-	videoURL := path + "/video/" + fileName
-	return videoURL, config.System.HttpAddress.DefaultCoverURL, nil
-
+	return fileName, constant.DefaultCover, nil
 }
 
-func UploadToOSS(fileName, filePath string) (string, error) {
+func UploadToOSS(fileName, filePath string) error {
 	putPolicy := storage.PutPolicy{
 		Scope: config.System.Qiniu.Bucket,
 	}
@@ -65,9 +62,7 @@ func UploadToOSS(fileName, filePath string) (string, error) {
 	err := formUploader.PutFile(context.Background(), &ret, upToken, fileName, filePath, &putExtra)
 	if err != nil {
 		zap.L().Error(err.Error())
-		return "", err
+		return err
 	}
-	// 这里好像是返回了CND 因为那个域名是开启了CDN的 都能访问
-	deadline := time.Now().Add(time.Second * 3600).Unix() //1小时有效期
-	return storage.MakePrivateURL(mac, config.System.Qiniu.OssDomain, ret.Key, deadline), nil
+	return nil
 }
